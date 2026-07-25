@@ -212,3 +212,17 @@ h6,
 .service-item:hover .bg-light::after {
     opacity: 1;
 }
+
+/* Service WhatsApp Button */
+.service-btn {
+    font-size: 0.85rem;
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.service-btn:hover {
+    background-color: #25d366;
+    border-color: #25d366;
+    transform: scale(1.05);
+}
