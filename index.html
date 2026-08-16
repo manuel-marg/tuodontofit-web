@@ -59,6 +59,36 @@
             background-color: #128C7E;
             color: #fff;
         }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            animation: breathe 2s ease-in-out infinite;
+        }
+        .whatsapp-float i {
+            color: #fff;
+            font-size: 24px;
+            animation: beat 2s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+        }
+        @keyframes beat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 
@@ -393,8 +423,10 @@
     <!-- Footer End -->
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/584140289658?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita%20odontol%C3%B3gica" class="whatsapp-float">
+        <i class="bi bi-whatsapp"></i>
+    </a>
 
 
     <!-- JavaScript Libraries -->
