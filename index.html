@@ -591,6 +591,27 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initWhatsAppButtons);
         }
+
+        // 3. Rastrear clics en botones y enlaces de llamada telefónica (Evento: Contact)
+        function initCallButtons() {
+            document.querySelectorAll('a[href^="tel:"]').forEach(function(boton) {
+                if (!boton.dataset.callTracked) {
+                    boton.dataset.callTracked = "true";
+                    boton.addEventListener('click', function() {
+                        if (typeof fbq === 'function') {
+                            fbq('track', 'Contact', {
+                                content_name: 'Llamada Telefonica'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        initCallButtons();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCallButtons);
+        }
     </script>
 </body>
 
