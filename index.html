@@ -541,37 +541,56 @@
     <script src="js/main.js"></script>
     <script>
         // 1. Rastrear cuando envían el formulario hacia WhatsApp (Evento: Lead)
-        document.getElementById('whatsappForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        const whatsappForm = document.getElementById('whatsappForm');
+        if (whatsappForm) {
+            whatsappForm.addEventListener('submit', function (e) {
+                e.preventDefault();
 
-            if (typeof fbq === 'function') {
-                fbq('track', 'Lead', {
-                    content_name: 'Formulario de Cita WhatsApp'
-                });
-            }
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead', {
+                        content_name: 'Formulario de Cita WhatsApp'
+                    });
+                }
 
-            const nombre = document.getElementById('nombre').value;
-            const telefono = document.getElementById('telefono').value;
-            const motivo = document.getElementById('motivo').value;
-            const mensaje = document.getElementById('mensaje').value;
+                const nombre = document.getElementById('nombre').value;
+                const telefono = document.getElementById('telefono').value;
+                const motivo = document.getElementById('motivo').value;
+                const mensaje = document.getElementById('mensaje').value;
 
-            const mensajeWhatsApp = `Hola, mi nombre es ${encodeURIComponent(nombre)}. Mi teléfono es ${encodeURIComponent(telefono)}. El motivo de mi consulta es ${encodeURIComponent(motivo)}. Mensaje: ${encodeURIComponent(mensaje)}.`;
+                const mensajeWhatsApp = `Hola, mi nombre es ${encodeURIComponent(nombre)}. Mi teléfono es ${encodeURIComponent(telefono)}. El motivo de mi consulta es ${encodeURIComponent(motivo)}. Mensaje: ${encodeURIComponent(mensaje)}.`;
 
-            window.location.href = `https://wa.me/584140289658?text=${mensajeWhatsApp}`;
-        });
+                // Breve retardo de 300ms para asegurar que el evento de Meta se envíe antes de redirigir
+                setTimeout(function () {
+                    window.location.href = `https://wa.me/584140289658?text=${mensajeWhatsApp}`;
+                }, 300);
+            });
+        }
 
         // 2. Rastrear todos los botones y enlaces directos a WhatsApp (Evento: Contact)
-        document.addEventListener('DOMContentLoaded', function () {
+        function initWhatsAppButtons() {
             document.querySelectorAll('a[href*="wa.me"]').forEach(function(boton) {
-                boton.addEventListener('click', function() {
-                    if (typeof fbq === 'function') {
-                        fbq('track', 'Contact', {
-                            content_name: 'Clic Boton WhatsApp'
-                        });
+                if (!boton.dataset.tracked) {
+                    boton.dataset.tracked = "true";
+                    // Asegurar target="_blank" para no interrumpir el evento al abrir WhatsApp
+                    if (!boton.getAttribute('target')) {
+                        boton.setAttribute('target', '_blank');
+                        boton.setAttribute('rel', 'noopener noreferrer');
                     }
-                });
+                    boton.addEventListener('click', function() {
+                        if (typeof fbq === 'function') {
+                            fbq('track', 'Contact', {
+                                content_name: 'Clic Boton WhatsApp'
+                            });
+                        }
+                    });
+                }
             });
-        });
+        }
+
+        initWhatsAppButtons();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWhatsAppButtons);
+        }
     </script>
 </body>
 
