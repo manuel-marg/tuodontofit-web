@@ -147,6 +147,24 @@
   margin-right: 8px;
 }
     </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2031256634217710');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.net/tr?id=2031256634217710&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -522,8 +540,15 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        // 1. Rastrear cuando envían el formulario hacia WhatsApp (Evento: Lead)
         document.getElementById('whatsappForm').addEventListener('submit', function (e) {
             e.preventDefault();
+
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    content_name: 'Formulario de Cita WhatsApp'
+                });
+            }
 
             const nombre = document.getElementById('nombre').value;
             const telefono = document.getElementById('telefono').value;
@@ -533,6 +558,19 @@
             const mensajeWhatsApp = `Hola, mi nombre es ${encodeURIComponent(nombre)}. Mi teléfono es ${encodeURIComponent(telefono)}. El motivo de mi consulta es ${encodeURIComponent(motivo)}. Mensaje: ${encodeURIComponent(mensaje)}.`;
 
             window.location.href = `https://wa.me/584140289658?text=${mensajeWhatsApp}`;
+        });
+
+        // 2. Rastrear todos los botones y enlaces directos a WhatsApp (Evento: Contact)
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('a[href*="wa.me"]').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'Contact', {
+                            content_name: 'Clic Boton WhatsApp'
+                        });
+                    }
+                });
+            });
         });
     </script>
 </body>
